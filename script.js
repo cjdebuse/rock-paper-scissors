@@ -30,7 +30,6 @@ function playRound (playerSelection, computerSelection) {
 
     //Compare player and comp selections and determine outcome
     let outcome;
-    let explanation;
     switch (playerSelection + computerSelection) {
         case "RockPaper":
             outcome = "lose";
@@ -52,22 +51,26 @@ function playRound (playerSelection, computerSelection) {
             break;
         default:
             outcome = "tied";
-            explanation = "Choose again";
-            //If tied, replay round
     }
     
-    //Return "You win/lose!  ____ beats ____"
+    //Compose an explanation for the outcome
+    let explanation;
     if (outcome === "win") {
         explanation = playerSelection + " beats " + computerSelection;
     } else if (outcome === "lose") {
         explanation = computerSelection + " beats " + playerSelection;
+    } else {
+        explanation = "Choose again";
     }
+    
+    //Return "You win||lose||tied! ____ beats ____||Choose again."
     return `You ${outcome}! ${explanation}.`;
 }
 
-console.log(playRound("Scissors", "Rock"));
+console.log(playRound("Paper", getComputerChoice()));
 
 //Function game
 //Run playRound 5 times
+//If tied, replay round
 //Keep track of wins/losses
 //Output overall winner
