@@ -19,11 +19,53 @@ function getComputerChoice() {
     return choice;
 }
 
-//Function playRound (playerSelection, computerSelection)
-//Change case of playerSelection
-//Compare player and comp selections
-//If tied, replay round
-//Return "You win/lose! ____ beats ____"
+function playRound (playerSelection, computerSelection) {
+    //Change case of playerSelection:
+    //Change whole string to lower case
+    playerSelection = playerSelection.toLowerCase();
+    //Remove first letter, store, and capitalize
+    let firstLetter = playerSelection.slice(0,1).toUpperCase();
+    //Add first letter back to string
+    playerSelection = firstLetter + playerSelection.slice(1);
+
+    //Compare player and comp selections and determine outcome
+    let outcome;
+    let explanation;
+    switch (playerSelection + computerSelection) {
+        case "RockPaper":
+            outcome = "lose";
+            break;
+        case "RockScissors":
+            outcome = "win";
+            break;
+        case "PaperScissors":
+            outcome = "lose";
+            break;
+        case "PaperRock":
+            outcome = "win";
+            break;
+        case "ScissorsPaper":
+            outcome = "win";
+            break;
+        case "ScissorsRock":
+            outcome = "lose";
+            break;
+        default:
+            outcome = "tied";
+            explanation = "Choose again";
+            //If tied, replay round
+    }
+    
+    //Return "You win/lose!  ____ beats ____"
+    if (outcome === "win") {
+        explanation = playerSelection + " beats " + computerSelection;
+    } else if (outcome === "lose") {
+        explanation = computerSelection + " beats " + playerSelection;
+    }
+    return `You ${outcome}! ${explanation}.`;
+}
+
+console.log(playRound("Scissors", "Rock"));
 
 //Function game
 //Run playRound 5 times
