@@ -1,10 +1,11 @@
-function getComputerChoice() {
+function getComputerChoice () {
     //Choose a random number (1, 2, or 3) and store it
-    let randomNumber = Math.floor(Math.random()*3 + 1);
+    const randomNumber = Math.random();
+    const oneTwoThree = Math.floor(randomNumber*3 + 1);
     let choice;
 
     //Return 1 = Rock, 2 = Paper, 3 = Scissors
-    switch (randomNumber) {
+    switch (oneTwoThree) {
         case 1: 
             choice = "Rock";
             break;
@@ -24,7 +25,7 @@ function playRound (playerSelection, computerSelection) {
     //Change whole string to lower case
     playerSelection = playerSelection.toLowerCase();
     //Remove first letter, store, and capitalize
-    let firstLetter = playerSelection.slice(0,1).toUpperCase();
+    const firstLetter = playerSelection.slice(0,1).toUpperCase();
     //Add first letter back to string
     playerSelection = firstLetter + playerSelection.slice(1);
 
@@ -55,22 +56,46 @@ function playRound (playerSelection, computerSelection) {
     
     //Compose an explanation for the outcome
     let explanation;
+    let verb;
     if (outcome === "win") {
-        explanation = playerSelection + " beats " + computerSelection;
+        verb = playerSelection === "Scissors" ? "beat" : "beats";
+        explanation = `Your ${playerSelection} ${verb} my ${computerSelection}`;
     } else if (outcome === "lose") {
-        explanation = computerSelection + " beats " + playerSelection;
+        verb = computerSelection === "Scissors" ? "beat" : "beats";
+        explanation = `My ${computerSelection} ${verb} your ${playerSelection}`;
     } else {
         explanation = "Choose again";
     }
     
     //Return "You win||lose||tied! ____ beats ____||Choose again."
-    return `You ${outcome}! ${explanation}.`;
+    return `You ${outcome} this round! ${explanation}.`;
 }
 
-console.log(playRound("Paper", getComputerChoice()));
-
-//Function game
-//Run playRound 5 times
-//If tied, replay round
-//Keep track of wins/losses
-//Output overall winner
+function game () {
+    let playerSelection;
+    let roundOutcome;
+    let wins = 0;
+    let losses = 0;
+    //Run playRound 5 times
+    for (let i = 1; i <= 5; i++) {
+        playerSelection = prompt(`Round ${i}! Choose your weapon:`);
+        roundOutcome = playRound(playerSelection, getComputerChoice());
+        //If tied, replay the round
+        if (roundOutcome.includes("tied")) {
+            i--;
+        //Otherwise, record the win or loss
+        } else if (roundOutcome.includes("win")) {
+            wins++;
+        } else {
+            losses++;
+        }
+        console.log(roundOutcome);
+    }
+    
+    //Output overall winner
+    if (wins > losses) {
+        console.log(`You won the game, ${wins} to ${losses}. You are the champion!`);
+    } else {
+        console.log(`You lost the game, ${wins} to ${losses}. Better luck next game.`);
+    }
+}
