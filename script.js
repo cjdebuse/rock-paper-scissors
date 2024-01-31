@@ -77,20 +77,20 @@ function game () {
     let wins = 0;
     let losses = 0;
     //Run playRound 5 times
-    for (let i = 1; i <= 5; i++) {
-        playerSelection = prompt(`Round ${i}! Choose your weapon:`);
-        roundOutcome = playRound(playerSelection, getComputerChoice());
-        //If tied, replay the round
-        if (roundOutcome.includes("tied")) {
-            i--;
-        //Otherwise, record the win or loss
-        } else if (roundOutcome.includes("win")) {
-            wins++;
-        } else {
-            losses++;
-        }
-        console.log(roundOutcome);
-    }
+    // for (let i = 1; i <= 5; i++) {
+    //     playerSelection = prompt(`Round ${i}! Choose your weapon:`);
+    //     roundOutcome = playRound(playerSelection, getComputerChoice());
+    //     //If tied, replay the round
+    //     if (roundOutcome.includes("tied")) {
+    //         i--;
+    //     //Otherwise, record the win or loss
+    //     } else if (roundOutcome.includes("win")) {
+    //         wins++;
+    //     } else {
+    //         losses++;
+    //     }
+    //     console.log(roundOutcome);
+    // }
     
     //Output overall winner
     if (wins > losses) {
