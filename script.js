@@ -1,3 +1,8 @@
+const buttons = document.querySelector('.btn-container');
+const output = document.querySelector('.output');
+buttons.addEventListener('click', playRound);
+
+
 function getComputerChoice () {
     //Choose a random number (1, 2, or 3) and store it
     const randomNumber = Math.random();
@@ -20,7 +25,11 @@ function getComputerChoice () {
     return choice;
 }
 
-function playRound (playerSelection, computerSelection) {
+function playRound (clickTarget) {
+    let playerSelection = clickTarget.target.id;
+    if (!playerSelection) {
+        return;
+    }
     //Change case of playerSelection:
     //Change whole string to lower case
     playerSelection = playerSelection.toLowerCase();
@@ -28,6 +37,8 @@ function playRound (playerSelection, computerSelection) {
     const firstLetter = playerSelection.slice(0,1).toUpperCase();
     //Add first letter back to string
     playerSelection = firstLetter + playerSelection.slice(1);
+
+    const computerSelection = getComputerChoice();
 
     //Compare player and comp selections and determine outcome
     let outcome;
@@ -68,7 +79,7 @@ function playRound (playerSelection, computerSelection) {
     }
     
     //Return "You win||lose||tied! ____ beats ____||Choose again."
-    return `You ${outcome} this round! ${explanation}.`;
+    output.textContent = `You ${outcome} this round! ${explanation}.`;
 }
 
 function game () {
