@@ -3,6 +3,7 @@ const output = document.querySelector('.output');
 const opponent = document.querySelector('div.weapon');
 let wins = 0;
 let losses = 0;
+let ties = 0;
 let gameRecord = '';
 buttons.addEventListener('click', playRound);
 
@@ -93,14 +94,15 @@ function writeOutput (outcome, playerSelection, computerSelection) {
             explanation = `My ${computerSelection} ${verb} your ${playerSelection}`;
             break;
         case 'tied':
+            ties++;
             explanation = "Choose again";
             break;
     }
 
-    gameRecord += outcome.slice(0,1).toUpperCase() + ' ';
+    gameRecord = `W: ${wins} | L: ${losses} | T: ${ties}`;
     
     //Output an explanation for the game outcome
-    output.innerHTML = `<p>Rounds so far: ${gameRecord}</p>
+    output.innerHTML = `<p>${gameRecord}</p>
         <p>You ${outcome} this round! ${explanation}.</p>`;
     if (wins + losses == 5 && wins > losses) {
         output.innerHTML += `
@@ -108,6 +110,7 @@ function writeOutput (outcome, playerSelection, computerSelection) {
         <p>Click a weapon to start a new game!</p>`;
         wins = 0;
         losses = 0;
+        ties = 0;
         gameRecord = '';
     } else if (wins + losses == 5 && wins < losses) {
         output.innerHTML += `
@@ -115,6 +118,7 @@ function writeOutput (outcome, playerSelection, computerSelection) {
         <p>Click a weapon to start a new game!</p>`
         wins = 0;
         losses = 0;
+        ties = 0;
         gameRecord = '';
     }
 }
