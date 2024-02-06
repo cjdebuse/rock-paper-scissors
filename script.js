@@ -1,5 +1,7 @@
 const buttons = document.querySelector('.btn-container');
 const output = document.querySelector('.output');
+let wins = 0;
+let losses = 0;
 buttons.addEventListener('click', playRound);
 
 
@@ -64,22 +66,41 @@ function playRound (clickTarget) {
         default:
             outcome = "tied";
     }
-    
-    //Compose an explanation for the outcome
+
+    writeOutput(outcome, playerSelection, computerSelection);
+}
+
+function writeOutput (outcome, playerSelection, computerSelection) {
+    //Output an explanation for the round outcome
     let explanation;
     let verb;
     if (outcome === "win") {
+        wins++;
         verb = playerSelection === "Scissors" ? "beat" : "beats";
         explanation = `Your ${playerSelection} ${verb} my ${computerSelection}`;
     } else if (outcome === "lose") {
+        losses++;
         verb = computerSelection === "Scissors" ? "beat" : "beats";
         explanation = `My ${computerSelection} ${verb} your ${playerSelection}`;
     } else {
         explanation = "Choose again";
     }
     
-    //Return "You win||lose||tied! ____ beats ____||Choose again."
+    //Output an explanation for the game outcome
     output.textContent = `You ${outcome} this round! ${explanation}.`;
+    if (wins + losses == 5 && wins > losses) {
+        output.innerHTML += `
+        <br>You won the game, ${wins} to ${losses}. You are the champion!
+        <br>Click a weapon to start a new game!`;
+        wins = 0;
+        losses = 0;
+    } else if (wins + losses == 5 && wins < losses) {
+        output.innerHTML += `
+        <br>You lost the game, ${wins} to ${losses}. Better luck next game.
+        <br>Click a weapon to start a new game!`
+        wins = 0;
+        losses = 0;
+    }
 }
 
 function game () {
@@ -88,20 +109,20 @@ function game () {
     let wins = 0;
     let losses = 0;
     //Run playRound 5 times
-    // for (let i = 1; i <= 5; i++) {
-    //     playerSelection = prompt(`Round ${i}! Choose your weapon:`);
-    //     roundOutcome = playRound(playerSelection, getComputerChoice());
-    //     //If tied, replay the round
-    //     if (roundOutcome.includes("tied")) {
-    //         i--;
-    //     //Otherwise, record the win or loss
-    //     } else if (roundOutcome.includes("win")) {
-    //         wins++;
-    //     } else {
-    //         losses++;
-    //     }
-    //     console.log(roundOutcome);
-    // }
+    for (let i = 1; i <= 5; i++) {
+        playerSelection = prompt(`Round ${i}! Choose your weapon:`);
+        roundOutcome = playRound(playerSelection, getComputerChoice());
+        //If tied, replay the round
+        if (roundOutcome.includes("tied")) {
+            i--;
+        //Otherwise, record the win or loss
+        } else if (roundOutcome.includes("win")) {
+            wins++;
+        } else {
+            losses++;
+        }
+        console.log(roundOutcome);
+    }
     
     //Output overall winner
     if (wins > losses) {
