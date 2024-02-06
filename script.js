@@ -1,7 +1,9 @@
 const buttons = document.querySelector('.btn-container');
 const output = document.querySelector('.output');
+const opponent = document.querySelector('div.weapon');
 let wins = 0;
 let losses = 0;
+let gameRecord = '';
 buttons.addEventListener('click', playRound);
 
 
@@ -10,20 +12,25 @@ function getComputerChoice () {
     const randomNumber = Math.random();
     const oneTwoThree = Math.floor(randomNumber*3 + 1);
     let choice;
+    let emoji;
 
     //Return 1 = Rock, 2 = Paper, 3 = Scissors
     switch (oneTwoThree) {
         case 1: 
             choice = "Rock";
+            emoji = "🪨";
             break;
         case 2:
             choice = "Paper";
+            emoji = "📜";
             break;
         case 3:
             choice = "Scissors";
+            emoji = "✂️";
             break;
     }
 
+    opponent.textContent = emoji;
     return choice;
 }
 
@@ -74,32 +81,41 @@ function writeOutput (outcome, playerSelection, computerSelection) {
     //Output an explanation for the round outcome
     let explanation;
     let verb;
-    if (outcome === "win") {
-        wins++;
-        verb = playerSelection === "Scissors" ? "beat" : "beats";
-        explanation = `Your ${playerSelection} ${verb} my ${computerSelection}`;
-    } else if (outcome === "lose") {
-        losses++;
-        verb = computerSelection === "Scissors" ? "beat" : "beats";
-        explanation = `My ${computerSelection} ${verb} your ${playerSelection}`;
-    } else {
-        explanation = "Choose again";
+    switch (outcome) {
+        case 'win':
+            wins++;
+            verb = playerSelection === "Scissors" ? "beat" : "beats";
+            explanation = `Your ${playerSelection} ${verb} my ${computerSelection}`;
+            break;
+        case 'lose':
+            losses++;
+            verb = computerSelection === "Scissors" ? "beat" : "beats";
+            explanation = `My ${computerSelection} ${verb} your ${playerSelection}`;
+            break;
+        case 'tied':
+            explanation = "Choose again";
+            break;
     }
+
+    gameRecord += outcome.slice(0,1).toUpperCase();
     
     //Output an explanation for the game outcome
-    output.textContent = `You ${outcome} this round! ${explanation}.`;
+    output.innerHTML = `<p>Rounds so far: ${gameRecord} </p>
+        <p>You ${outcome} this round! ${explanation}.</p>`;
     if (wins + losses == 5 && wins > losses) {
         output.innerHTML += `
-        <br>You won the game, ${wins} to ${losses}. You are the champion!
-        <br>Click a weapon to start a new game!`;
+        <p>You won the game, ${wins} to ${losses}. You are the champion!</p>
+        <p>Click a weapon to start a new game!</p>`;
         wins = 0;
         losses = 0;
+        gameRecord = '';
     } else if (wins + losses == 5 && wins < losses) {
         output.innerHTML += `
-        <br>You lost the game, ${wins} to ${losses}. Better luck next game.
-        <br>Click a weapon to start a new game!`
+        <p>You lost the game, ${wins} to ${losses}. Better luck next game.</p>
+        <p>Click a weapon to start a new game!</p>`
         wins = 0;
         losses = 0;
+        gameRecord = '';
     }
 }
 
