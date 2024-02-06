@@ -97,10 +97,10 @@ function writeOutput (outcome, playerSelection, computerSelection) {
             break;
     }
 
-    gameRecord += outcome.slice(0,1).toUpperCase();
+    gameRecord += outcome.slice(0,1).toUpperCase() + ' ';
     
     //Output an explanation for the game outcome
-    output.innerHTML = `<p>Rounds so far: ${gameRecord} </p>
+    output.innerHTML = `<p>Rounds so far: ${gameRecord}</p>
         <p>You ${outcome} this round! ${explanation}.</p>`;
     if (wins + losses == 5 && wins > losses) {
         output.innerHTML += `
@@ -116,34 +116,5 @@ function writeOutput (outcome, playerSelection, computerSelection) {
         wins = 0;
         losses = 0;
         gameRecord = '';
-    }
-}
-
-function game () {
-    let playerSelection;
-    let roundOutcome;
-    let wins = 0;
-    let losses = 0;
-    //Run playRound 5 times
-    for (let i = 1; i <= 5; i++) {
-        playerSelection = prompt(`Round ${i}! Choose your weapon:`);
-        roundOutcome = playRound(playerSelection, getComputerChoice());
-        //If tied, replay the round
-        if (roundOutcome.includes("tied")) {
-            i--;
-        //Otherwise, record the win or loss
-        } else if (roundOutcome.includes("win")) {
-            wins++;
-        } else {
-            losses++;
-        }
-        console.log(roundOutcome);
-    }
-    
-    //Output overall winner
-    if (wins > losses) {
-        console.log(`You won the game, ${wins} to ${losses}. You are the champion!`);
-    } else {
-        console.log(`You lost the game, ${wins} to ${losses}. Better luck next game.`);
     }
 }
